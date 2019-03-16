@@ -248,13 +248,13 @@ int __connman_tethering_set_enabled(void)
 	}
 
 	dns = gateway;
-	if (__connman_dnsproxy_add_listener(index) < 0) {
+/*	if (__connman_dnsproxy_add_listener(index) < 0) {
 		connman_error("Can't add listener %s to DNS proxy",
 								BRIDGE_NAME);
 		dns = private_network_primary_dns;
 		DBG("Serving %s nameserver to clients", dns);
 	}
-
+*/
 	tethering_dhcp_server = dhcp_server_start(BRIDGE_NAME,
 						gateway, subnet_mask,
 						start_ip, end_ip,
