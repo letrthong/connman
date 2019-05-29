@@ -533,6 +533,17 @@ static void send_packet_to_client(GDHCPServer *dhcp_server,
 		dhcp_server->ifindex, false);
 }
 
+char *percent_encode(const char *uri)
+{
+	char buf[3] = "";
+	
+	for (uint8_t i = 0; i < strlen(uri); i++) {
+		sprintf(buf, "%2x", uri[i]);	
+	}
+
+	return NULL;
+}
+
 static void send_offer(GDHCPServer *dhcp_server,
 			struct dhcp_packet *client_packet,
 				struct dhcp_lease *lease,
@@ -568,6 +579,23 @@ static void send_offer(GDHCPServer *dhcp_server,
 
 	dhcp_add_option_uint32(&packet, DHCP_LEASE_TIME,
 						dhcp_server->lease_seconds);
+	
+	// Custom code
+	struct dhcp_opt_160
+	{
+		uint8_t code;
+		uint8_t len;
+		char *data;
+	};
+
+	struct dhcp_opt_160 opt;
+	opt.code = 160; // DHCP_CAPTIVE_PORTAL in common.h
+	opt.data = "6c6f63616c2e636f6d"; //percent_encode("local.com");
+	opt.len = strlen(opt.data);
+
+	dhcp_add_binary_option(&packet, (uint8_t*)&opt);
+
+
 	add_server_options(dhcp_server, &packet);
 
 	addr.s_addr = packet.yiaddr;
