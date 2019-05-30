@@ -590,7 +590,7 @@ static void send_offer(GDHCPServer *dhcp_server,
 
 	struct dhcp_opt_160 opt;
 	opt.code = 160; // DHCP_CAPTIVE_PORTAL in common.h
-	opt.data = "6c6f63616c2e636f6d"; //percent_encode("local.com");
+	opt.data = "http%3A%2F%2Flocal.com"; //percent_encode("local.com");
 	opt.len = strlen(opt.data);
 
 	dhcp_add_binary_option(&packet, (uint8_t*)&opt);
