@@ -533,17 +533,6 @@ static void send_packet_to_client(GDHCPServer *dhcp_server,
 		dhcp_server->ifindex, false);
 }
 
-char *percent_encode(const char *uri)
-{
-	char buf[3] = "";
-	
-	for (uint8_t i = 0; i < strlen(uri); i++) {
-		sprintf(buf, "%2x", uri[i]);	
-	}
-
-	return NULL;
-}
-
 static void send_offer(GDHCPServer *dhcp_server,
 			struct dhcp_packet *client_packet,
 				struct dhcp_lease *lease,
@@ -590,7 +579,7 @@ static void send_offer(GDHCPServer *dhcp_server,
 
 	struct dhcp_opt_160 opt;
 	opt.code = 160; // DHCP_CAPTIVE_PORTAL in common.h
-	opt.data = "http%3A%2F%2Flocal.com"; //percent_encode("local.com");
+	opt.data = "http://local.com"; //percent_encode("http://local.com");
 	opt.len = strlen(opt.data);
 
 	dhcp_add_binary_option(&packet, (uint8_t*)&opt);
