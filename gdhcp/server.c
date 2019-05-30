@@ -570,7 +570,7 @@ static void send_offer(GDHCPServer *dhcp_server,
 						dhcp_server->lease_seconds);
 	
 	// Custom code
-	struct dhcp_opt_160
+	struct __attribute__((__packed__)) dhcp_opt_160
 	{
 		uint8_t code;
 		uint8_t len;
@@ -583,7 +583,7 @@ static void send_offer(GDHCPServer *dhcp_server,
 	opt.len = strlen(opt.data);
 
 	dhcp_add_binary_option(&packet, (uint8_t*)&opt);
-
+	// End of custom code
 
 	add_server_options(dhcp_server, &packet);
 
